@@ -110,7 +110,6 @@ if st.button("🚀 Review Project") and repo_url:
     st.subheader("📥 Export Full Report")
 
     md_text = export_markdown(result, summary, recs)
-    export_pdf(md_text)
 
     st.download_button(
         "⬇️ Download Markdown Report",
@@ -118,30 +117,29 @@ if st.button("🚀 Review Project") and repo_url:
         file_name="report.md"
     )
 
-    with open("report.pdf", "rb") as f:
-        st.download_button(
-            "⬇️ Download PDF Report",
-            f,
-            file_name="report.pdf"
-        )
+    st.info(
+        "PDF export is disabled on cloud deployments for stability. "
+        "You can convert the Markdown report to PDF locally if needed."
+    )
 
-# ---- EXAMPLE RESUME BULLETS (STATIC) ----
-st.markdown("---")
-st.subheader("📄 Example Resume Bullets (for THIS Tool)")
 
-st.caption(
-    "Example of how *this* project can be described on a resume. "
-    "This is just a reference."
-)
+    # ---- EXAMPLE RESUME BULLETS (STATIC) ----
+    st.markdown("---")
+    st.subheader("📄 Example Resume Bullets (for THIS Tool)")
 
-st.code(
-    """Autonomous Project Reviewer Agent
-Tech: Python, Agentic AI, LLMs (Groq), Streamlit
+    st.caption(
+        "Example of how *this* project can be described on a resume. "
+        "This is just a reference."
+    )
 
-• Built an autonomous agentic system that reviews GitHub repositories by analyzing code quality, documentation, and project structure.
-• Implemented deterministic static analysis to detect missing docstrings, oversized files, and structural issues.
-• Integrated LLM-based synthesis to generate human-readable project summaries and resume-ready bullet points.
-• Developed an interactive Streamlit application with score breakdowns and exportable Markdown/PDF reports.
-""",
-    language="text"
-)
+    st.code(
+        """Autonomous Project Reviewer Agent
+    Tech: Python, Agentic AI, LLMs (Groq), Streamlit
+
+    • Built an autonomous agentic system that reviews GitHub repositories by analyzing code quality, documentation, and project structure.
+    • Implemented deterministic static analysis to detect missing docstrings, oversized files, and structural issues.
+    • Integrated LLM-based synthesis to generate human-readable project summaries and resume-ready bullet points.
+    • Developed an interactive Streamlit application with score breakdowns and exportable Markdown/PDF reports.
+    """,
+        language="text"
+    )

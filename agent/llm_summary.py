@@ -59,10 +59,15 @@ def generate_resume_bullets(report):
         return "Please provide a Groq API key to generate resume bullets."
 
     prompt = f"""
-You are a career coach helping a student write resume bullets.
+You are a career coach writing resume bullets.
 
-Based on this project analysis:
+IMPORTANT:
+- Do NOT claim that the code was modified or refactored.
+- Describe what the PROJECT DOES, not changes made by the reviewer.
+- Use past tense.
+- Write bullets that a student can honestly put on their resume.
 
+Project analysis:
 Documentation issues:
 {report['documentation']}
 
@@ -72,14 +77,14 @@ Code issues:
 Structure issues:
 {report['structure']}
 
-Write 3–4 strong, resume-ready bullet points describing THIS PROJECT.
-Use action verbs and quantify impact where possible.
+Write 3–4 concise, resume-ready bullet points describing THIS PROJECT.
 """
 
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[{"role": "user", "content": prompt}],
-        temperature=0.3,
+        temperature=0.2,
     )
 
     return response.choices[0].message.content.strip()
+
