@@ -60,26 +60,23 @@ Streamlit UI / CLI Output
 
 ## 📁 Project Structure
 
+```text
 project-reviewer-agent/
-│
 ├── agent/
-│ ├── reviewer.py # Core review logic
-│ ├── evaluator.py # Scoring and evaluation
-│ └── llm_summary.py # LLM-based summary generation
-│
+│   ├── reviewer.py      # Core review logic
+│   ├── evaluator.py     # Scoring and evaluation
+│   └── llm_summary.py   # LLM-based summary generation
 ├── tools/
-│ ├── repo_loader.py # GitHub repo cloning
-│ ├── file_reader.py # Safe file reading
-│ └── code_analyzer.py # Static code checks
-│
-├── streamlit_app.py # Streamlit UI
-├── app.py # CLI entry point
+│   ├── repo_loader.py   # GitHub repo cloning
+│   ├── file_reader.py   # Safe file reading
+│   └── code_analyzer.py # Static code checks
+├── streamlit_app.py     # Streamlit UI
+├── app.py               # CLI entry point
 ├── requirements.txt
-├── .env # Environment variables (not committed)
+├── .env                 # Environment variables (not committed)
 ├── .gitignore
 └── README.md
-
----
+```
 
 ## 🔐 Environment Setup
 
@@ -130,13 +127,10 @@ Use LLMs only for high-level synthesis and reasoning
 
 Build agentic systems that are:
 
-Reliable
-
-Explainable
-
-Practical
-
-Resume-worthy
+- Reliable
+- Explainable
+- Practical
+- Resume-worthy
 
 🚧 Future Improvements
 Export reports as Markdown / PDF
