@@ -8,7 +8,9 @@ from agent.llm_summary import generate_llm_summary
 from utils.report_exporter import export_markdown, export_pdf
 
 
+# MUST be first Streamlit call
 st.set_page_config(page_title="Autonomous Project Reviewer", layout="wide")
+
 
 # ---- SIDEBAR: API KEY ----
 st.sidebar.title("🔑 API Configuration")
@@ -21,7 +23,6 @@ user_key = st.sidebar.text_input(
 
 if user_key:
     os.environ["GROQ_API_KEY"] = user_key
-
 
 st.sidebar.markdown("---")
 
@@ -36,7 +37,8 @@ st.sidebar.markdown("""
 ✅ Free tier is enough for this project.
 """)
 
-# ---- MAIN APP ----
+
+# ---- MAIN UI ----
 st.title("🧠 Autonomous Project Reviewer Agent")
 st.write("Analyze GitHub repositories using agentic AI + rule-based analysis")
 
@@ -110,3 +112,18 @@ if st.button("🚀 Review Project") and repo_url:
             f,
             file_name="report.pdf"
         )
+
+    # ---- RESUME BULLETS SECTION ----
+    st.subheader("📄 Resume-Ready Project Description")
+
+    st.code(
+        """Autonomous Project Reviewer Agent
+Tech: Python, Agentic AI, LLMs (Groq), Streamlit
+
+• Built an autonomous agentic system that reviews GitHub repositories by analyzing code quality, documentation, and project structure.
+• Implemented deterministic static analysis to detect issues like missing docstrings, oversized files, missing tests, and incomplete READMEs.
+• Integrated LLM-based synthesis (Groq) to generate human-readable summaries and actionable recommendations while minimizing hallucination.
+• Developed an interactive Streamlit UI with score breakdowns and exportable Markdown/PDF reports for real-world usability.
+""",
+        language="text"
+    )
