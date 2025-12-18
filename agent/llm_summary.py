@@ -5,19 +5,23 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def generate_llm_summary(report):
+def _get_client():
     api_key = os.getenv("GROQ_API_KEY")
-
     if not api_key:
+        return None
+    return Groq(api_key=api_key)
+
+
+def generate_llm_summary(report):
+    client = _get_client()
+    if not client:
         return (
             "LLM summary not generated.",
-            "Please provide a valid Groq API key in the sidebar."
+            "Please provide a Groq API key in the sidebar."
         )
 
-    client = Groq(api_key=api_key)
-
     prompt = f"""
-You are a senior software engineer reviewing a project.
+You are a senior software engineer reviewing a software project.
 
 Documentation issues:
 {report['documentation']}
@@ -29,8 +33,8 @@ Structure issues:
 {report['structure']}
 
 Give:
-1. A concise overall summary (5–6 lines)
-2. Clear, actionable recommendations
+1. A concise overall project summary (5–6 lines)
+2. Clear, actionable improvement recommendations
 """
 
     response = client.chat.completions.create(
@@ -47,3 +51,35 @@ Give:
         summary, recs = text, ""
 
     return summary.strip(), recs.strip()
+
+
+def generate_resume_bullets(report):
+    client = _get_client()
+    if not client:
+        return "Please provide a Groq API key to generate resume bullets."
+
+    prompt = f"""
+You are a career coach helping a student write resume bullets.
+
+Based on this project analysis:
+
+Documentation issues:
+{report['documentation']}
+
+Code issues:
+{report['code']}
+
+Structure issues:
+{report['structure']}
+
+Write 3–4 strong, resume-ready bullet points describing THIS PROJECT.
+Use action verbs and quantify impact where possible.
+"""
+
+    response = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,
+    )
+
+    return response.choices[0].message.content.strip()

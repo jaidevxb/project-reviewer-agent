@@ -4,7 +4,10 @@ import os
 from tools.repo_loader import load_repo
 from agent.reviewer import review_repo
 from agent.evaluator import evaluate
-from agent.llm_summary import generate_llm_summary
+from agent.llm_summary import (
+    generate_llm_summary,
+    generate_resume_bullets,
+)
 from utils.report_exporter import export_markdown, export_pdf
 
 
@@ -12,13 +15,13 @@ from utils.report_exporter import export_markdown, export_pdf
 st.set_page_config(page_title="Autonomous Project Reviewer", layout="wide")
 
 
-# ---- SIDEBAR: API KEY ----
+# ---- SIDEBAR ----
 st.sidebar.title("🔑 API Configuration")
 
 user_key = st.sidebar.text_input(
     "Enter your Groq API Key",
     type="password",
-    help="Your key is never stored. It is used only for this session."
+    help="Key is used only for this session."
 )
 
 if user_key:
@@ -34,13 +37,16 @@ st.sidebar.markdown("""
 4. Create a new key  
 5. Paste it above  
 
-✅ Free tier is enough for this project.
+✅ Free tier is enough for this app.
 """)
 
 
 # ---- MAIN UI ----
 st.title("🧠 Autonomous Project Reviewer Agent")
-st.write("Analyze GitHub repositories using agentic AI + rule-based analysis")
+st.write(
+    "Analyze GitHub repositories and generate review reports, summaries, "
+    "and resume-ready bullet points."
+)
 
 repo_url = st.text_input("🔗 Enter GitHub Repository URL")
 
@@ -52,7 +58,7 @@ if st.button("🚀 Review Project") and repo_url:
 
     st.success("Analysis completed!")
 
-    # ---- SCORE SECTION ----
+    # ---- SCORE ----
     st.subheader("📊 Score Breakdown")
     col1, col2, col3 = st.columns(3)
 
@@ -94,8 +100,14 @@ if st.button("🚀 Review Project") and repo_url:
     st.markdown("### Recommendations")
     st.write(recs)
 
-    # ---- EXPORT SECTION ----
-    st.subheader("📥 Export Report")
+    # ---- RESUME BULLETS FOR USER PROJECT ----
+    st.subheader("🧾 Resume Bullets for This Project")
+    st.caption("You can directly copy-paste these into your resume.")
+    resume_bullets = generate_resume_bullets(result["report"])
+    st.code(resume_bullets, language="text")
+
+    # ---- EXPORT ----
+    st.subheader("📥 Export Full Report")
 
     md_text = export_markdown(result, summary, recs)
     export_pdf(md_text)
@@ -113,17 +125,23 @@ if st.button("🚀 Review Project") and repo_url:
             file_name="report.pdf"
         )
 
-    # ---- RESUME BULLETS SECTION ----
-    st.subheader("📄 Resume-Ready Project Description")
+# ---- EXAMPLE RESUME BULLETS (STATIC) ----
+st.markdown("---")
+st.subheader("📄 Example Resume Bullets (for THIS Tool)")
 
-    st.code(
-        """Autonomous Project Reviewer Agent
+st.caption(
+    "Example of how *this* project can be described on a resume. "
+    "This is just a reference."
+)
+
+st.code(
+    """Autonomous Project Reviewer Agent
 Tech: Python, Agentic AI, LLMs (Groq), Streamlit
 
 • Built an autonomous agentic system that reviews GitHub repositories by analyzing code quality, documentation, and project structure.
-• Implemented deterministic static analysis to detect issues like missing docstrings, oversized files, missing tests, and incomplete READMEs.
-• Integrated LLM-based synthesis (Groq) to generate human-readable summaries and actionable recommendations while minimizing hallucination.
-• Developed an interactive Streamlit UI with score breakdowns and exportable Markdown/PDF reports for real-world usability.
+• Implemented deterministic static analysis to detect missing docstrings, oversized files, and structural issues.
+• Integrated LLM-based synthesis to generate human-readable project summaries and resume-ready bullet points.
+• Developed an interactive Streamlit application with score breakdowns and exportable Markdown/PDF reports.
 """,
-        language="text"
-    )
+    language="text"
+)
