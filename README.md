@@ -1,50 +1,32 @@
 
 # 🧠 Autonomous Project Reviewer Agent
 
-An agentic AI system that automatically reviews GitHub repositories by analyzing
-code quality, documentation, and project structure, and then generates a
-human-readable summary and actionable recommendations using a Large Language Model (LLM).
-
-This project combines **deterministic static analysis** with **LLM-based synthesis**
-to produce reliable, explainable, and practical project reviews.
+A compact, explainable agent that reviews GitHub repositories using deterministic static analysis plus LLM-based synthesis to generate a human-readable summary and actionable recommendations.
 
 ---
 
-## 🚀 Features
+## 🚀 Key Features
 
-- 🔍 Clones and analyzes GitHub repositories
-- 📊 Scores projects across multiple dimensions:
-  - Code Quality
-  - Documentation
-  - Structure & Testing
-- 🧠 Detects issues such as:
-  - Missing docstrings
-  - Oversized / unrefactored files
-  - Missing tests
-  - Incomplete README sections
-- 🤖 Generates:
-  - High-level project summary
-  - Actionable improvement recommendations
-- 🖥 Interactive Streamlit UI for easy usage
-- 🧩 Clean, modular, agent-style architecture
+- Repository cloning and safe file enumeration
+- Deterministic checks for missing docstrings, TODOs, and oversized files
+- Project scoring for Code Quality, Documentation, and Structure & Tests
+- LLM-based synthesis (Groq) for final summary and actionable recommendations
+- CLI and Streamlit UI
+- Report export to Markdown / PDF
+- Modular, explainable architecture
 
 ---
 
-## 🏗 Architecture Overview
+## 🏗 How it works
 
-GitHub Repo
-↓
-Rule-based Static Analysis
-↓
-Scoring Engine
-↓
-LLM-based Summary & Recommendations
-↓
-Streamlit UI / CLI Output
+1. Clone repository and enumerate files (skips ignored folders).
+2. Read whitelisted files (safety checks: extensions and size limits).
+3. Run deterministic static checks and collect issues.
+4. Score the project across defined categories.
+5. Generate a concise LLM summary and recommendations.
+6. Present results via CLI or Streamlit and allow export to Markdown/PDF.
 
-- **Deterministic tools** handle correctness and scoring  
-- **LLM (Groq)** is used only for synthesis and reasoning  
-- This design minimizes hallucination and improves reliability
+> Deterministic checks are used for reliability; the LLM (Groq) is used only for concise synthesis and recommendations.
 
 ---
 
@@ -120,10 +102,10 @@ LLM-generated project summary
 
 Clear, actionable recommendations
 
-💡 Design Philosophy
-Avoid overusing LLMs where deterministic rules are sufficient
+## 💡 Design Philosophy
 
-Use LLMs only for high-level synthesis and reasoning
+- Prefer deterministic checks for core verification
+- Use LLMs only for concise synthesis and human-facing recommendations
 
 Build agentic systems that are:
 
@@ -132,14 +114,12 @@ Build agentic systems that are:
 - Practical
 - Resume-worthy
 
-🚧 Future Improvements
-Export reports as Markdown / PDF
+## 🚧 Roadmap / Future Improvements
 
-Compare multiple repositories
-
-Configurable scoring weights
-
-GitHub Action integration for automated reviews
+- Export reports as Markdown / PDF (improved formatting)
+- Compare multiple repositories / benchmarking
+- Configurable scoring weights
+- GitHub Action integration for automated reviews
 
 👤 Author
 Jaidev
