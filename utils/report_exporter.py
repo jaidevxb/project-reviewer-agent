@@ -1,5 +1,22 @@
 from fpdf import FPDF
-import markdown
+import textwrap
+import re
+
+
+def _clean_text(text):
+    """
+    Make text safe for PDF rendering:
+    - remove markdown
+    - replace bullets
+    - normalize whitespace
+    """
+    text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)   # bold
+    text = re.sub(r"\*(.*?)\*", r"\1", text)       # italics
+    text = text.replace("•", "-")
+    text = text.replace("–", "-")
+    text = text.replace("—", "-")
+    return text
+
 
 def export_markdown(result, summary, recs):
     md = f"""
@@ -36,10 +53,13 @@ def export_pdf(markdown_text):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.set_font("Arial", size=10)
+    pdf.set_font("Helvetica", size=10)
 
-    text = markdown_text.replace("#", "").replace("*", "")
-    for line in text.split("\n"):
-        pdf.multi_cell(0, 6, line)
+    safe_text = _clean_text(markdown_text)
+
+    for line in safe_text.split("\n"):
+        wrapped_lines = textwrap.wrap(line, width=90) or [""]
+        for wline in wrapped_lines:
+            pdf.multi_cell(0, 6, wline)
 
     pdf.output("report.pdf")

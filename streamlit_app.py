@@ -95,10 +95,10 @@ if st.button("🚀 Review Project") and repo_url:
     summary, recs = generate_llm_summary(result["report"])
 
     st.markdown("### Summary")
-    st.write(summary)
+    st.markdown(summary)
 
     st.markdown("### Recommendations")
-    st.write(recs)
+    st.markdown(recs)
 
     # ---- RESUME BULLETS FOR USER PROJECT ----
     st.subheader("🧾 Resume Bullets for This Project")
