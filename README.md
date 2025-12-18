@@ -1,4 +1,3 @@
-
 # 🧠 Autonomous Project Reviewer Agent
 
 A compact, explainable agent that reviews GitHub repositories using deterministic static analysis plus LLM-based synthesis to generate a human-readable summary and actionable recommendations.
@@ -12,7 +11,8 @@ A compact, explainable agent that reviews GitHub repositories using deterministi
 - Project scoring for Code Quality, Documentation, and Structure & Tests
 - LLM-based synthesis (Groq) for final summary and actionable recommendations
 - CLI and Streamlit UI
-- Report export to Markdown / PDF
+- Report export to Markdown (PDF supported locally)
+- Generates resume-ready bullet points for the analyzed project
 - Modular, explainable architecture
 
 ---
@@ -101,6 +101,10 @@ Categorized issues (Documentation, Code, Structure)
 LLM-generated project summary
 
 Clear, actionable recommendations
+
+## 🎯 Why this project matters
+
+Most AI code reviewers rely heavily on LLMs and are prone to hallucination. This project demonstrates a production-style approach where deterministic static analysis ensures correctness, and LLMs are used only for high-level synthesis and recommendations.
 
 ## 💡 Design Philosophy
 
