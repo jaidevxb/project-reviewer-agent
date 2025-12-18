@@ -40,3 +40,4 @@ Give:
         summary, recs = text, ""
 
     return summary.strip(), recs.strip()
+

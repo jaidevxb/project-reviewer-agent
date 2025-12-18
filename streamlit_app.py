@@ -4,6 +4,7 @@ from tools.repo_loader import load_repo
 from agent.reviewer import review_repo
 from agent.evaluator import evaluate
 from agent.llm_summary import generate_llm_summary
+from utils.report_exporter import export_markdown, export_pdf
 
 
 st.set_page_config(page_title="Autonomous Project Reviewer", layout="wide")
@@ -62,3 +63,22 @@ if st.button("🚀 Review Project") and repo_url:
 
     st.markdown("### Recommendations")
     st.write(recs)
+
+    # ---- EXPORT SECTION ----
+    st.subheader("📥 Export Report")
+
+    md_text = export_markdown(result, summary, recs)
+    export_pdf(md_text)
+
+    st.download_button(
+        "⬇️ Download Markdown Report",
+        md_text,
+        file_name="report.md"
+    )
+
+    with open("report.pdf", "rb") as f:
+        st.download_button(
+            "⬇️ Download PDF Report",
+            f,
+            file_name="report.pdf"
+        )
