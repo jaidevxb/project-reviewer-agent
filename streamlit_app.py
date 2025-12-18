@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 from tools.repo_loader import load_repo
 from agent.reviewer import review_repo
@@ -9,6 +10,33 @@ from utils.report_exporter import export_markdown, export_pdf
 
 st.set_page_config(page_title="Autonomous Project Reviewer", layout="wide")
 
+# ---- SIDEBAR: API KEY ----
+st.sidebar.title("🔑 API Configuration")
+
+user_key = st.sidebar.text_input(
+    "Enter your Groq API Key",
+    type="password",
+    help="Your key is never stored. It is used only for this session."
+)
+
+if user_key:
+    os.environ["GROQ_API_KEY"] = user_key
+
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown("""
+### How to get a Groq API Key
+1. Go to https://console.groq.com  
+2. Sign in with Google  
+3. Open **API Keys**  
+4. Create a new key  
+5. Paste it above  
+
+✅ Free tier is enough for this project.
+""")
+
+# ---- MAIN APP ----
 st.title("🧠 Autonomous Project Reviewer Agent")
 st.write("Analyze GitHub repositories using agentic AI + rule-based analysis")
 
