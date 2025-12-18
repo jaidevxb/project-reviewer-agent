@@ -5,9 +5,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-
 def generate_llm_summary(report):
+    api_key = os.getenv("GROQ_API_KEY")
+
+    if not api_key:
+        return (
+            "LLM summary not generated.",
+            "Please provide a valid Groq API key in the sidebar."
+        )
+
+    client = Groq(api_key=api_key)
+
     prompt = f"""
 You are a senior software engineer reviewing a project.
 
@@ -33,11 +41,9 @@ Give:
 
     text = response.choices[0].message.content
 
-    # simple split
     if "Recommendations" in text:
         summary, recs = text.split("Recommendations", 1)
     else:
         summary, recs = text, ""
 
     return summary.strip(), recs.strip()
-
